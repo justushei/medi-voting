@@ -64,7 +64,8 @@ const HOST_CODE="host2024";
 const COLORS=["#a78bfa","#34d399","#fb923c","#60a5fa","#f472b6","#facc15"];
 
 const BAKED_KEY="$2a$10$ogmDdAflk6IX8KDvLW3RAeK8sVWszadAEX14oNTkRXxx90cshkXW.";
-let state={view:"init",name:"",isHost:false,apiKey:BAKED_KEY,binId:"",videos:[],currentId:null,votes:{},voters:[],myVotes:{},extra:0,extraNote:"",submitted:false,syncing:false,ready:false};
+const BAKED_BIN="6a173d9521f9ee59d2926da8";
+let state={view:"init",name:"",isHost:false,apiKey:BAKED_KEY,binId:BAKED_BIN,videos:[],currentId:null,votes:{},voters:[],myVotes:{},extra:0,extraNote:"",submitted:false,syncing:false,ready:false};
 let syncInterval=null;
 
 // JSONBin helpers
@@ -353,15 +354,6 @@ const PRESET_VIDEOS=[
 ];
 
 async function autoInit(){
-  state.apiKey=BAKED_KEY;
-  let binId;
-  try{ binId=localStorage.getItem("medi-bin-id"); }catch{ binId=null; }
-  if(!binId){
-    binId=await binCreate();
-    try{ if(binId) localStorage.setItem("medi-bin-id",binId); }catch{}
-  }
-  if(!binId){ state.view="error"; state.errorMsg="Konnte keine Datenbank erstellen. JSONBin-Antwort fehlgeschlagen."; render(); return; }
-  state.binId=binId;
   const existing=await binGet();
   if(!existing||!existing.videos||existing.videos.length===0){
     await binSet({videos:PRESET_VIDEOS,currentId:null,votes:{},voters:[]});
