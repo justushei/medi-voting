@@ -64,7 +64,7 @@ const HOST_CODE="host2024";
 const COLORS=["#a78bfa","#34d399","#fb923c","#60a5fa","#f472b6","#facc15"];
 
 const BAKED_KEY="$2a$10$ogmDdAflk6IX8KDvLW3RAeK8sVWszadAEX14oNTkRXxx90cshkXW.";
-let state={view:"init",name:"",isHost:false,apiKey:BAKED_KEY,binId:"",videos:[],currentId:null,votes:{},voters:[],myVotes:{},extra:0,extraNote:"",submitted:false,syncing:false};
+let state={view:"init",name:"",isHost:false,apiKey:BAKED_KEY,binId:"",videos:[],currentId:null,votes:{},voters:[],myVotes:{},extra:0,extraNote:"",submitted:false,syncing:false,ready:false};
 let syncInterval=null;
 
 // JSONBin helpers
