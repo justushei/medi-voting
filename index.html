@@ -94,6 +94,7 @@ async function binSet(data){
 }
 
 async function syncDown(){
+  if(!state.name && !state.isHost) return;
   const data=await binGet(); if(!data) return;
   state.videos=data.videos||[];
   const prevId=state.currentId;
