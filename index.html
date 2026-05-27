@@ -70,27 +70,27 @@ let syncInterval=null;
 
 // JSONBin helpers
 async function binGet(){
-  if(!state.binId||!state.apiKey) return null;
   try{
-    const r=await fetch(`https://api.jsonbin.io/v3/b/${state.binId}/latest`,{headers:{"X-Master-Key":state.apiKey}});
-    if(!r.ok) return null;
-    const d=await r.json(); return d.record;
-  }catch{return null;}
+    const r=await fetch(`https://api.jsonbin.io/v3/b/${BAKED_BIN}/latest`,{
+      headers:{"X-Master-Key":BAKED_KEY,"X-Access-Key":BAKED_KEY}
+    });
+    console.log("binGet status:",r.status);
+    if(!r.ok){console.error("binGet failed:",await r.text());return null;}
+    const d=await r.json();
+    console.log("binGet record:",d.record);
+    return d.record;
+  }catch(e){console.error("binGet error:",e);return null;}
 }
 async function binSet(data){
-  if(!state.binId||!state.apiKey) return;
   try{
-    await fetch(`https://api.jsonbin.io/v3/b/${state.binId}`,{method:"PUT",headers:{"Content-Type":"application/json","X-Master-Key":state.apiKey},body:JSON.stringify(data)});
-  }catch{}
-}
-async function binCreate(){
-  try{
-    const r=await fetch("https://api.jsonbin.io/v3/b",{method:"POST",headers:{"Content-Type":"application/json","X-Master-Key":state.apiKey,"X-Bin-Name":"medi-voting","X-Bin-Private":"false"},body:JSON.stringify({videos:[],currentId:null,votes:{},voters:[]})});
-    const text=await r.text();
-    console.log("binCreate status:",r.status,"body:",text);
-    if(!r.ok) return null;
-    const d=JSON.parse(text); return d.metadata.id;
-  }catch(e){console.error("binCreate error:",e);return null;}
+    const r=await fetch(`https://api.jsonbin.io/v3/b/${BAKED_BIN}`,{
+      method:"PUT",
+      headers:{"Content-Type":"application/json","X-Master-Key":BAKED_KEY},
+      body:JSON.stringify(data)
+    });
+    console.log("binSet status:",r.status);
+    if(!r.ok) console.error("binSet failed:",await r.text());
+  }catch(e){console.error("binSet error:",e);}
 }
 
 async function syncDown(){
